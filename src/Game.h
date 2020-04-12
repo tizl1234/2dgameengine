@@ -8,7 +8,7 @@
 class Game {
     private:
         bool isRunning;
-        SDL_Window *winfow;
+        SDL_Window *window;
         SDL_Renderer *renderer;
     public:
         Game();
