@@ -71,8 +71,13 @@ void Game::ProcessInput() {
 }
 
 void Game::Update() {
-    //Wait until FRAME_TARGET_TIME
-    while(!SDL_TICKS_PASSED(SDL_GetTicks(), ticksLastFrame + FRAME_TARGET_TIME));
+    //Sleep until we reach target frame time in ms
+    int timeToWait = FRAME_TARGET_TIME - (SDL_GetTicks() - ticksLastFrame);
+    // Only sleep if we are too fast to process this frame
+    if(timeToWait > 0 && timeToWait <= FRAME_TARGET_TIME) {
+        SDL_Delay(timeToWait);
+    }
+
     // delta time is the difference from last frame converted to seconds
     float deltaTime = (SDL_GetTicks() - ticksLastFrame) / 1000.0f;
     // Clamp deltaTime to a max value
