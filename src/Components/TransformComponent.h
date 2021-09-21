@@ -26,22 +26,12 @@ class TransformComponent: public Component {
             
         }
 
-        void Update(float deltaTime) {
-            //TO-DO:
+        void Update(float deltaTime) override {
             position.x += velocity.x * deltaTime;
             position.y += velocity.y * deltaTime;
         }
 
         void Render () override {
-            SDL_Rect transformRectangle = {
-                (int) position.x,
-                (int) position.y,
-                width,
-                height
-            };
-
-            SDL_SetRenderDrawColor(Game::renderer, 255, 255, 255, 255);
-            SDL_RenderFillRect(Game::renderer, &transformRectangle);
         }
 };
 

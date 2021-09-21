@@ -3,7 +3,6 @@
 #include "./Game.h"
 
 int main (int argc, char *args[]) {
-    // TO-DO:
     Game *game = new Game(); 
 
     game->Initialize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -16,5 +15,6 @@ int main (int argc, char *args[]) {
 
     game->Destroy();
 
+    delete game;
     return 0;
 }

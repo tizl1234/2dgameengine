@@ -1,11 +1,12 @@
 #include "./Entity.h"
+#include <iostream>
 
 Entity::Entity(EntityManager& manager): manager(manager) {
-    this->isActive = true;
+    isActive = true;
 }
 
 Entity::Entity(EntityManager& manager, std::string name): manager(manager), name(name) {
-    this->isActive = true;
+    isActive = true;
 }
 
 void Entity::Update(float deltaTime) {
@@ -21,9 +22,15 @@ void Entity::Render() {
 }
 
 void Entity::Destroy() {
-    this->isActive = false;
+    isActive = false;
 }
 
 bool Entity::IsActive() const {
-    return this->isActive;
+    return isActive;
+}
+
+void Entity::ListAllComponents() const {
+    for (const auto &component : componentTypeMap) {
+        std::cout << component.first->name() << std::endl;
+    }
 }
