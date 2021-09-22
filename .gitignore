@@ -31,5 +31,8 @@
 *.out
 *.app
 
+# Editor configs
 .vscode
+.4coder
+
 game
