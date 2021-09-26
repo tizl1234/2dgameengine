@@ -15,7 +15,10 @@ EntityManager manager;
 AssetManager* Game::assetManager = new AssetManager(&manager);
 SDL_Renderer* Game::renderer;
 SDL_Event Game::event;
+SDL_Rect Game::camera = { 0, 0, WINDOW_WIDTH, WINDOW_HEIGHT };
+Entity& player(manager.AddEntity("chopper", PLAYER_LAYER));
 Map* map;
+
 
 Game::Game() {
     isRunning = false;
@@ -68,7 +71,7 @@ void Game::LoadLevel(int levelNumber) {
     assetManager->AddTexture("radar-image", std::string("./assets/images/radar.png").c_str());
     assetManager->AddTexture("jungle-tiletexture", std::string("./assets/tilemaps/jungle.png").c_str());
 
-    map = new Map("jungle-tiletexture", 1, 32);
+    map = new Map("jungle-tiletexture", 2, 32);
     map->LoadMap("./assets/tilemaps/jungle.map", 25, 20);
     /*Start including entities and theirs components*/
     
@@ -76,10 +79,9 @@ void Game::LoadLevel(int levelNumber) {
     tank.AddComponent<TransformComponent>(0,0,20,20,32, 32, 1);
     tank.AddComponent<SpriteComponent>("tank-image");
 
-    Entity& chopper(manager.AddEntity("chopper", PLAYER_LAYER));
-    chopper.AddComponent<TransformComponent>(240, 106, 0, 0, 32, 32, 1);
-    chopper.AddComponent<SpriteComponent>("chopper-image", 2, 90, true, false);
-    chopper.AddComponent<KeyboardControlComponent>("up", "right", "down", "left", "space");
+    player.AddComponent<TransformComponent>(240, 106, 0, 0, 32, 32, 1);
+    player.AddComponent<SpriteComponent>("chopper-image", 2, 90, true, false);
+    player.AddComponent<KeyboardControlComponent>("up", "right", "down", "left", "space");
 
     Entity& radar(manager.AddEntity("radar", UI_LAYER));
     radar.AddComponent<TransformComponent>(720, 15, 0, 0, 64, 64, 1);
@@ -122,6 +124,8 @@ void Game::Update() {
     
     //Make EntityManager to call updates on all entities
     manager.Update(deltaTime);
+
+    HandleCameraMovement();
 }
 
 void Game::Render() {
@@ -141,4 +145,16 @@ void Game::Destroy() {
     SDL_DestroyRenderer(renderer);
     SDL_DestroyWindow(window);
     SDL_Quit();
+}
+
+void Game::HandleCameraMovement() {
+    TransformComponent* mainPlayerTransform = player.GetComponent<TransformComponent>();
+    camera.x = mainPlayerTransform->position.x - (WINDOW_WIDTH / 2);
+    camera.y = mainPlayerTransform->position.y - (WINDOW_HEIGHT / 2);
+
+    //clamp camera position
+    camera.x = camera.x < 0 ? 0 : camera.x;
+    camera.y = camera.y < 0 ? 0 : camera.y;
+    camera.x = camera.x > camera.w ? camera.w : camera.x;
+    camera.y = camera.y > camera.h ? camera.w : camera.y;
 }

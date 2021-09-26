@@ -50,24 +50,24 @@ class KeyboardControlComponent : public Component {
                 std::string keyCode = std::to_string(Game::event.key.keysym.sym);
 
                 if (keyCode.compare(upKey) == 0) {
-                    transform->velocity.y = -15;
+                    transform->velocity.y = -30;
                     transform->velocity.x = 0;
                     sprite->Play("UpAnimation");
                 }
                 if (keyCode.compare(rightKey) == 0) {
                     transform->velocity.y = 0;
-                    transform->velocity.x = 15;
+                    transform->velocity.x = 30;
                     sprite->Play("RightAnimation");
                 }
                 if (keyCode.compare(downKey) == 0) {
-                    transform->velocity.y = 15;
+                    transform->velocity.y = 30;
                     transform->velocity.x = 0;
                     sprite->Play("DownAnimation");
                 }
 
                 if (keyCode.compare(leftKey) == 0) {
                     transform->velocity.y = 0;
-                    transform->velocity.x = -15;
+                    transform->velocity.x = -30;
                     sprite->Play("LeftAnimation");
                 }
                 if (keyCode.compare(shootKey) == 0) {
